@@ -116,7 +116,7 @@ def preprocess():
             # draw on the img
             draw = ImageDraw.Draw(show_gt_im)
             with open(os.path.join(origin_txt_dir,
-                                   o_img_fname[:-4] + '.txt'), 'r') as f:
+                                   o_img_fname[:-4] + '.txt'), 'r', encoding="utf-8") as f:
                 anno_list = f.readlines()
             xy_list_array = np.zeros((len(anno_list), 4, 2))
             for anno, i in zip(anno_list, range(len(anno_list))):
@@ -170,9 +170,9 @@ def preprocess():
 
     random.shuffle(train_val_set)
     val_count = int(cfg.validation_split_ratio * len(train_val_set))
-    with open(os.path.join(data_dir, cfg.val_fname), 'w') as f_val:
+    with open(os.path.join(data_dir, cfg.val_fname), 'w', encoding="utf-8") as f_val:
         f_val.writelines(train_val_set[:val_count])
-    with open(os.path.join(data_dir, cfg.train_fname), 'w') as f_train:
+    with open(os.path.join(data_dir, cfg.train_fname), 'w', encoding="utf-8") as f_train:
         f_train.writelines(train_val_set[val_count:])
 
 

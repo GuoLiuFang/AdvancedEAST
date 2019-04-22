@@ -12,7 +12,7 @@ lambda_inside_score_loss = 4.0
 lambda_side_vertex_code_loss = 1.0
 lambda_side_vertex_coord_loss = 1.0
 
-total_img = 10000
+total_img = 100
 validation_split_ratio = 0.1
 max_train_img_size = int(train_task_id[-3:])
 max_predict_img_size = int(train_task_id[-3:])  # 2400
