@@ -1,6 +1,6 @@
 import os
 
-train_task_id = '3T256'
+train_task_id = '3T736'
 initial_epoch = 0
 epoch_num = 24
 lr = 1e-3
