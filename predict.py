@@ -10,7 +10,8 @@ from label import point_inside_of_quad
 from network import East
 from preprocess import resize_image
 from nms import nms
-
+import glob
+import os
 
 def sigmoid(x):
     """`y = 1 / (1 + exp(-x))`"""
@@ -91,7 +92,7 @@ def predict(east_detect, img_path, pixel_threshold, quiet=False):
                 print('quad invalid with vertex num less then 4.')
         quad_im.save(img_path + '_predict.jpg')
         if cfg.predict_write2txt and len(txt_items) > 0:
-            with open(img_path[:-4] + '.txt', 'w') as f_txt:
+            with open(img_path + '.txt', 'w', encoding="utf-8") as f_txt:
                 f_txt.writelines(txt_items)
 
 
@@ -122,14 +123,14 @@ def predict_txt(east_detect, img_path, txt_path, pixel_threshold, quiet=False):
         elif not quiet:
             print('quad invalid with vertex num less then 4.')
     if cfg.predict_write2txt and len(txt_items) > 0:
-        with open(txt_path, 'w') as f_txt:
+        with open(txt_path, 'w', encoding="utf-8") as f_txt:
             f_txt.writelines(txt_items)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--path', '-p',
-                        default='demo/012.png',
+    parser.add_argument('--img_dir', '-d',
+                        default='demo',
                         help='image path')
     parser.add_argument('--threshold', '-t',
                         default=cfg.pixel_threshold,
@@ -139,11 +140,15 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    img_path = args.path
+    img_dir = args.img_dir
     threshold = float(args.threshold)
-    print(img_path, threshold)
+    print(img_dir, threshold)
 
     east = East()
     east_detect = east.east_network()
     east_detect.load_weights(cfg.saved_model_weights_file_path)
-    predict(east_detect, img_path, threshold)
+    # 在这里加一个for循环就好了
+    for img_p in glob.glob(os.path.join(img_dir,'*')):
+        if any(suf in img_p for suf in ['.png', '.jpg', '.jpeg']):
+            print(f"current is working on {img_p}")
+            predict(east_detect, img_p, threshold)
