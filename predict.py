@@ -146,7 +146,8 @@ if __name__ == '__main__':
 
     east = East()
     east_detect = east.east_network()
-    east_detect.load_weights(cfg.saved_model_weights_file_path)
+    east_detect.load_weights("saved_model/east_model_weights_fangben_dl2540T736.h5")
+    #east_detect.load_weights(cfg.saved_model_weights_file_path)
     # 在这里加一个for循环就好了
     for img_p in glob.glob(os.path.join(img_dir,'*')):
         if any(suf in img_p for suf in ['.png', '.jpg', '.jpeg']):
