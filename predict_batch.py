@@ -1,5 +1,6 @@
 import argparse
-
+import os
+import tqdm
 import numpy as np
 from PIL import Image, ImageDraw
 from keras.preprocessing import image
@@ -139,11 +140,14 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    img_path = args.path
+    imgs_path = args.path
     threshold = float(args.threshold)
+    model_path = './saved_model/weights_fb_dl2540finitune.h5'
     print(img_path, threshold)
-
     east = East()
     east_detect = east.east_network()
-    east_detect.load_weights(cfg.saved_model_weights_file_path)
-    predict(east_detect, img_path, threshold)
+    east_detect.load_weights(model_path)
+    for img_name in tqdm(os.listdir(imgs_path)):
+        if img_name.split('.')[-1] in ['jpg', 'jpeg', 'png']:
+            img_path = imgs_path + img_name
+            predict(east_detect, img_path, threshold)
