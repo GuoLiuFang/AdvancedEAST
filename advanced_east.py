@@ -7,14 +7,16 @@ from network import East
 from losses import quad_loss
 from data_generator import gen
 
+weights_path = './saved_model/east_model_weights_fb_dl2540_0425T640.h5'
 east = East()
 east_network = east.east_network()
 east_network.summary()
 east_network.compile(loss=quad_loss, optimizer=Adam(lr=cfg.lr,
                                                     # clipvalue=cfg.clipvalue,
                                                     decay=cfg.decay))
-if cfg.load_weights and os.path.exists(cfg.saved_model_weights_file_path):
-    east_network.load_weights(cfg.saved_model_weights_file_path)
+if cfg.load_weights and os.path.exists(weights_path):
+    east_network.load_weights(weights_path)
+    print('#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#')
 
 east_network.fit_generator(generator=gen(),
                            steps_per_epoch=cfg.steps_per_epoch,
